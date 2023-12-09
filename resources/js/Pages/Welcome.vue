@@ -1,8 +1,6 @@
 <script setup>
-import { Head, router } from '@inertiajs/vue3';
-import { reactive } from 'vue';
-import { onMounted } from 'vue';
-import { ref, onBeforeMount } from 'vue';
+import { Head, router, useForm } from '@inertiajs/vue3';
+import { reactive, ref, onBeforeMount, onMounted } from 'vue';
 
 defineProps();
 
@@ -13,7 +11,10 @@ onBeforeMount(() => {
 onMounted(() => {
     Echo.private('chat-room')
         .listen('MessageSent', (e) => {
-            console.log(e)
+            messages.value.push({
+                text: e.message,
+                author: e.user.name,
+            })
         });
     
     // Add event listener for key up
@@ -27,14 +28,21 @@ onkeyup = (event) => {
     }
 }
 
-const form = reactive({
+const form = useForm({
     message: '',
+    onSuccess: () => {
+        form.reset('message')
+    }
 })
 
 // submit the message
 function submit() {
-    router.post('message/sent', form);
+    form.post('message/sent', form);
 }
+
+const messages = ref([
+    
+]);
 </script>
 
 <template>
@@ -44,17 +52,42 @@ function submit() {
         <!-- container -->
         <div class="relative max-w-6xl bg-white mx-auto w-full h-full shadow-xl rounded-xl border border-gray-300">
             <!-- header -->
-            <div class="bg-gray-100 p-4 rounded-t-xl">
+            <div class="bg-gray-100 p-4 rounded-t-xl shadow-sm">
                 header here
             </div>
             <!-- main -->
-            <section class="absolute inset-x-0 bottom-0 top-14 flex rounded-b-xl">
+            <section class="absolute inset-x-0 bottom-0 top-[57px] flex rounded-b-xl">
                 <aside class="w-3/12 rounded-bl-xl">
                     dsfsd
                 </aside>
                 <main id="chat-wrapper" class="w-9/12 rounded-br-xl flex flex-col justify-between">
-                    <div class="flex-1">
-                        dsds
+                    <div class="flex p-4 overflow-auto flex-col">
+                        <div v-for="(message, i) in messages">
+                            <div :class="[
+                                message.author === $page.props.auth.user.name
+                                    ? 'ml-2 float-right flex flex-row-reverse'
+                                    : 'mr-2 float-left flex'
+                                    , 'mb-4 p-2 max-w-sm' 
+                            ]">
+                                <div :class="[
+                                    message.author === $page.props.auth.user.name
+                                        ? 'ml-2.5'
+                                        : 'mr-2.5'
+                                ]">
+                                    <img class="inline-block h-7 w-7 rounded-full" :src="message.author === $page.props.auth.user.name ? 'https://i.pravatar.cc/300' : 'https://i.pravatar.cc/301'" alt="">
+                                </div>
+                                <div
+                                    :class="[
+                                        message.author === $page.props.auth.user.name
+                                            ? 'bg-[#dcf8c6] rounded-tl-xl'
+                                            : 'bg-white rounded-tr-xl'
+                                            , 'p-2 text-sm rounded-b-xl shadow-sm'
+                                    ]"
+                                >
+                                    {{ message.text }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="bg-gray-100 p-4 flex justify-between space-x-4 items-center">
                         <div class="flex space-x-2">
