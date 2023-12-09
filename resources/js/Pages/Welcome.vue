@@ -1,12 +1,8 @@
 <script setup>
-import { Head, router, useForm } from '@inertiajs/vue3';
-import { reactive, ref, onBeforeMount, onMounted } from 'vue';
+import { Head, useForm } from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
 
 defineProps();
-
-onBeforeMount(() => {
-
-})
 
 onMounted(() => {
     Echo.private('chat-room')
@@ -69,11 +65,7 @@ const messages = ref([
                                     : 'mr-2 float-left flex'
                                     , 'mb-4 p-2 max-w-sm' 
                             ]">
-                                <div :class="[
-                                    message.author === $page.props.auth.user.name
-                                        ? 'ml-2.5'
-                                        : 'mr-2.5'
-                                ]">
+                                <div v-if="$page.props.auth.user.name !== message.author" class="ml-2">
                                     <img class="inline-block h-7 w-7 rounded-full" :src="message.author === $page.props.auth.user.name ? 'https://i.pravatar.cc/300' : 'https://i.pravatar.cc/301'" alt="">
                                 </div>
                                 <div
