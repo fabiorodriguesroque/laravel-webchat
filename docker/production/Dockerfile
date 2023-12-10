@@ -3,7 +3,6 @@ FROM node:16 as build_frontend
 WORKDIR /app
 COPY . /app
 RUN npm install
-RUN php artisan ziggy:generate
 RUN npm run build
 RUN rm -rf node_modules
 
