@@ -10,7 +10,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/production/Dockerfile
-    image: webchat-app/webchat-app:${TAG:-latest}
+    image: vendor/webchat-app:${TAG:-latest}
     volumes:
       - ./.env:/var/www/html/.env
       - ./storage/app:/var/www/html/storage/app
