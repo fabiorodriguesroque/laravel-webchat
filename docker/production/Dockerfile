@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . /app
 RUN npm install
 RUN npm run build
-RUN rm -rf node_modules
+# RUN rm -rf node_modules
 
 FROM composer:2 as build_composer
 WORKDIR /app
