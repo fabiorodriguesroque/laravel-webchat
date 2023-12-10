@@ -2,9 +2,9 @@ FROM node:16 as build_frontend
 
 WORKDIR /app
 COPY . /app
-RUN npm install
 # for resolve vendor/tightenco/ziggy/dist/vue.m from resources/js/app.js
 COPY --from=base /var/www/html/vendor ./vendor 
+RUN npm install
 RUN npm run build
 RUN rm -rf node_modules
 
