@@ -12,8 +12,9 @@
         "noEmit": true,
         "skipLibCheck": true,
         "paths": {
-            "@/*": ["./resources/js/*"]
+            "@/*": ["./resources/js/*"],
+            "ziggy": ["./vendor/tightenco/ziggy/dist"]
         }
     },
-    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts", "resources/js/**/*.vue"]
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts", "resources/js/**/*.vue", "resources/js/app.js"]
 }
