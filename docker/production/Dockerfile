@@ -11,6 +11,8 @@ RUN rm -rf node_modules
 FROM composer:2 as build_composer
 WORKDIR /app
 COPY --from=build_frontend /app /app
+# for resolve vendor/tightenco/ziggy/dist/vue.m from resources/js/app.js
+COPY --from=base /var/www/html/vendor ./vendor 
 RUN composer install --no-dev --ignore-platform-reqs --no-interaction
 
 FROM ubuntu:22.04
